@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body> 
+    <div class="mouse-parallax">
+        <div class="mouse-parallax-bg"></div>
+    </div>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .mouse-parallax {
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            overflow: hidden;
+        }
+        .mouse-parallax-bg {
+            position: absolute;
+            background-image: url("spac_poster-1.png");
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            width: 110vw;
+            height: 110vh;
+            transition: all 0.1s ease;  
+        }
+    </style>
+    <script>
+        let bg = document.querySelector('.mouse-parallax-bg');
+        window.addEventListener('mousemove', function(e) {
+            let x = e.clientX / window.innerWidth;
+            let y = e.clientY / window.innerHeight;  
+            bg.style.transform = 'translate(-' + x * 50 + 'px, -' + y * 50 + 'px)';
+        });
+    </script>
+</body>
+</html>
