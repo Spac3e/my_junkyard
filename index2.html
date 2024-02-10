@@ -1,0 +1,31 @@
+<article id="post-293" class="post-293 post type-post status-publish format-standard hentry category-18 category-23 category-25 tag-12 tag-10">
+  <header class="entry-header">
+      <h1 class="entry-title">Interaction between User namespaces and Capabilities</h1>
+      <div class="entry-meta">
+          <span class="posted-on"><time class="entry-date published" datetime="2023-12-08T15:38:46">December 8, 2023</time></span>
+      </div><!-- .entry-meta -->
+  </header><!-- .entry-header -->
+
+  <div class="entry-content">
+      <p>User namespaces and capabilities are important kernel functionality to make containers secure. They allow better isolation of containers and limit the privileges a container might have. A while back, a user reported a <a href="https://github.com/containers/podman/issues/19185">bug</a> where some odd behavior was noticed when namespaces are shared between containers, which could lead to security problems. Let's take a closer look at what can go wrong if you are not aware of the behavior.</p>
+
+      <p>First, let's build a container image with nftables installed:</p>
+
+      <pre class="wp-block-code"><code>$ cat Containerfile 
+FROM fedora
+RUN dnf install -y nftables
+$ podman build -t testimg .</code></pre>
+
+      <p>Now we have nft installed in the image and can use it. nft manages the firewall and as such needs the CAP_NET_ADMIN capability to function; otherwise, it will error. So now when we run:</p>
+
+      <pre class="wp-block-code"><code>$ podman run --rm testimg nft list ruleset
+Operation not permitted (you must be root)
+netlink: Error: cache initialization failed: Operation not permitted
+$ podman run --rm --cap-add CAP_NET_ADMIN testimg nft list ruleset
+&lt;Results omitted for brevity&gt;</code></pre>
+
+      <!-- more content ... -->
+
+  </div><!-- .entry-content -->
+
+</article><!-- #post-293 -->
